@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -101,16 +101,19 @@ namespace Hexahue
             {
                 Console.Write("Filepath : ");
                 string filePath = Console.ReadLine();
+                Console.Write("Is there any margins (if no, leave empty else TOP,LEFT,BOTTOM,RIGHT): ");
+                var input = Console.ReadLine();
+                var margins = input != "" ? input.Split(",").Select(x => Convert.ToInt32(x)).ToList() : new List<int>() { 0, 0, 0, 0, };
                 Bitmap image = new Bitmap(filePath);
-                for (int y = 0; y < image.Height; y += 3)
+                for (int y = margins[0]; y < image.Height - margins[2]; y += 3)
                 {
-                    for (int x = 0; x < image.Width; x += 2)
+                    for (int x = margins[1]; x < image.Width - margins[3]; x += 2)
                     {
                         var map = ( image.GetPixel(x, y).ToArgb(), image.GetPixel(x + 1, y).ToArgb(), image.GetPixel(x, y + 1).ToArgb(), image.GetPixel(x + 1, y + 1).ToArgb(), image.GetPixel(x, y + 2).ToArgb(), image.GetPixel(x + 1, y + 2).ToArgb() );
                         Console.Write(map1[map]);
                     }
                 }
-                Console.WriteLine("Decoding ended.");
+                Console.WriteLine("\nDecoding ended.");
                 Console.ReadKey();
             }
             if (choice == 2)
@@ -120,8 +123,6 @@ namespace Hexahue
                 Console.WriteLine("Enter the filepath : ");
                 string filePath = Console.ReadLine();
                 var image = new Bitmap((texte.Count() * 2 < 800 ? texte.Count() * 2 : 800), (texte.Count() * 2 / 800 + 1) * 3 );
-                Console.WriteLine(image.Height);
-                Console.WriteLine(image.Width);
                 int l = 0;
                 for(int y = 0; y < image.Height; y += 3)
                 {
@@ -155,7 +156,7 @@ namespace Hexahue
                     }
                 }
                 image.Save(filePath);
-                Console.WriteLine("Decoding ended.");
+                Console.WriteLine("\nDecoding ended.");
                 Console.ReadKey();
             }
         }
